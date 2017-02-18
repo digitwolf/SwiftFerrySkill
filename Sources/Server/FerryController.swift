@@ -11,6 +11,7 @@ import Kitura
 import SwiftyJSON
 import LoggerAPI
 import Ferry
+import AlexaSkillsKit
 
 public class FerryController {
     /**
@@ -24,7 +25,43 @@ public class FerryController {
         terminalService.get(path: "terminals",
                             method: "terminalbasics",
                             completionHandler: { result in
-                                    try! response.status(.OK).send(json: result).end()
+                                try! response.status(.OK).send(json: result).end()
         })
+    }
+    
+    /**
+     * Handler for getting an application/json response.
+     */
+    public func postTerminal(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        var data = Data()
+        let _ = try? request.read(into: &data)
+        
+        response.headers["Content-Type"] = "application/json; charset=UTF-8"
+//        let requestDispatcher = RequestDispatcher(requestHandler: AlexaSkillHandler())
+//        requestDispatcher.dispatch(data: data) { result in
+//            switch result {
+//            case .success(let data):
+//                response.send(data: data).status(.OK)
+//            case .failure(let error):
+//                response.send(error.message).status(.badRequest)
+//            }
+        let msg = "{\"version\": \"1.0\",\"response\": {\"outputSpeech\": {\"type\": \"PlainText\",\"text\": \"Alexa Skill received intent GetFerryTime\"}}}"
+        try response.status(.OK).send(msg).end()
+        
+        
+            //next()
+//        response.headers["Content-Type"] = "application/json; charset=utf-8"
+//        let result = JSON([
+//                "version": "1.0",
+//                "response": [
+//                    "outputSpeech": [
+//                        "type": "PlainText",
+//                        "text": "Hi",
+//                    ]
+//                ],
+//                "shouldEndSession": true
+//            ])
+//        try! response.status(.OK).send(json: result).end()
+    
     }
 }

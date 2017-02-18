@@ -60,6 +60,7 @@ public class Controller {
 
         // Ferry
         router.get("/ferry/terminal", handler: ferryController.getTerminal)
+        router.post("/ferry/terminal", handler: ferryController.postTerminal)
     }
 
     /**
