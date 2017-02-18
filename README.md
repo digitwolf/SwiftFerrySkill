@@ -10,14 +10,12 @@ $ swift build
 ```
 
 ```
-$ ./.build/debug/Kitura-Starter
- INFO: Kitura_Starter main.swift line 29 - Server will be started on 'http://localhost:8080'.
- INFO: listen(on:) HTTPServer.swift line 73 - Listening on port 8080
+$ ./.build/debug/Server
 ```
 
 Once the server starts, you should see the message _Listening on port 8080_ as shown above.
 
-3) Open your browser at [http://localhost:8080](http://localhost:8080) to access the welcome page for the Kitura-Starter app. This page displays static HTML content served from the Kitura-based server application. You can explore the `public` folder in the repo to see the HTML file and related resources (e.g. images, CSS file)
+3) Open your browser at [http://localhost:8080](http://localhost:8080) to access the welcome page. This page displays static HTML content served from the Kitura-based server application. You can explore the `public` folder in the repo to see the HTML file and related resources (e.g. images, CSS file)
 
 4) Generate XCode Project
 
