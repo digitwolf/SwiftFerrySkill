@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftyJSON
-import Alamofire
 
 public class TerminalService : WSDOTService {
     public init() {
@@ -29,30 +28,30 @@ public class WSDOTService {
     {
         print("http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)")
         
-        let parameters: Parameters = ["apiaccesscode": key]
-        Alamofire
-            .request("http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)", parameters: parameters)
-            .validate(statusCode: 200..<300)
-            .validate(contentType: ["application/json"])
-            .downloadProgress(closure: { (Progress) in
-                print(Progress.fractionCompleted)
-            })
-            .responseJSON { response in
-                switch response.result {
-                case .success:
-                    print("Validation Successful")
-                case .failure(let error):
-                    print(error)
-                }
-                
-                
-                print(response.request!)  // original URL request
-                print(response.response!) // HTTP URL response
-                print(response.data!)     // server data
-                print(response.result)   // result of response serialization
-                    
-                let json = JSON(response.result.value!)
-                completionHandler(json);
-        }
+//        let parameters: Parameters = ["apiaccesscode": key]
+//        Alamofire
+//            .request("http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)", parameters: parameters)
+//            .validate(statusCode: 200..<300)
+//            .validate(contentType: ["application/json"])
+//            .downloadProgress(closure: { (Progress) in
+//                print(Progress.fractionCompleted)
+//            })
+//            .responseJSON { response in
+//                switch response.result {
+//                case .success:
+//                    print("Validation Successful")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//                
+//                
+//                print(response.request!)  // original URL request
+//                print(response.response!) // HTTP URL response
+//                print(response.data!)     // server data
+//                print(response.result)   // result of response serialization
+//                    
+//                let json = JSON(response.result.value!)
+//                completionHandler(json);
+//        }
     }
 }

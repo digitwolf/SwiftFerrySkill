@@ -18,6 +18,11 @@ public class AlexaSkillHandler : RequestHandler {
     }
     
     public func handleIntent(request: IntentRequest, session: Session, next: @escaping (StandardResult) -> ()) {
+        if (request.intent.name != "GetFerryTime") {
+            next(.failure(MessageError(message: "Sorry, I don't support that.")))
+            return
+        }
+        
         let standardResponse = generateResponse(message: "Alexa Skill received intent \(request.intent.name)")
         next(.success(standardResponse: standardResponse, sessionAttributes: session.attributes))
     }

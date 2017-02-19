@@ -14,24 +14,28 @@
 # limitations under the License.
 ##
 
-# Builds a Docker image with all the dependencies for compiling and running the Kitura-Starter sample application.
+# Builds a Docker image with all the dependencies for compiling and running the Server sample application.
 
-FROM ibmcom/swift-ubuntu:latest
+FROM swiftdocker/swift:latest
 MAINTAINER IBM Swift Engineering at IBM Cloud
-LABEL Description="Docker image for building and running the Kitura-Starter sample application."
+LABEL Description="Docker image for building and running the Server sample application."
+
+RUN apt-get update && apt-get install -y \
+  openssl \
+  libssl-dev 
 
 # Expose default port for Kitura
 EXPOSE 8080
 
-RUN mkdir /root/Kitura-Starter
+RUN mkdir /root/Server
 
-ADD Sources /root/Kitura-Starter
-ADD Package.swift /root/Kitura-Starter
-ADD LICENSE /root/Kitura-Starter
-ADD .swift-version /root/Kitura-Starter
+ADD Sources /root/Server
+ADD Package.swift /root/Server
+ADD LICENSE /root/Server
+ADD .swift-version /root/Server
 
-RUN cd /root/Kitura-Starter && swift build
+RUN cd /root/Server && swift build
 
 USER root
-#CMD ["/root/Kitura-Starter/.build/debug/Kitura-Starter"]
-CMD [ "sh", "-c", "cd /root/Kitura-Starter && .build/debug/Kitura-Starter" ]
+#CMD ["/root/Server/.build/debug/Server"]
+CMD [ "sh", "-c", "cd /root/Server && .build/debug/Server" ]
