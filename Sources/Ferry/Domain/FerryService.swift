@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dispatch
 import SwiftyJSON
 
 class FerryService {
@@ -57,7 +58,6 @@ class FerryService {
                 notes = terminal.dictionaryValue["WaitTimeNotes"]?.string
             }
         }
-        print(notes)
         
         return notes
     }
