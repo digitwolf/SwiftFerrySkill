@@ -24,10 +24,11 @@ import CloudFoundryDeploymentTracker
 
 do {
   // HeliumLogger disables all buffering on stdout
-  HeliumLogger.use(LoggerMessageType.debug)
+  
   let controller = try Controller()
+  HeliumLogger.use(controller.getLogLevel())
   Log.info("Server will be started on '\(controller.url)'.")
-  CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/IBM-Bluemix/Kitura-Starter.git", codeVersion: nil).track()
+  CloudFoundryDeploymentTracker(repositoryURL: "https://github.com/digitwolf/SwiftFerrySkill.git", codeVersion: nil).track()
   Kitura.addHTTPServer(onPort: controller.port, with: controller.router)
   // Start Kitura-Starter server
   Kitura.run()

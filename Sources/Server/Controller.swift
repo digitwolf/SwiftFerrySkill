@@ -63,6 +63,21 @@ public class Controller {
         router.post("/ferry/terminal", handler: ferryController.postTerminal)
     }
 
+    public func getLogLevel() -> LoggerMessageType {
+        switch ProcessInfo.processInfo.environment["VCAP_LOGGER"] ?? "info" {
+        case "debug":
+            return LoggerMessageType.debug
+        case "verbose":
+            return LoggerMessageType.verbose
+        case "error":
+            return LoggerMessageType.error
+        case "warning":
+            return LoggerMessageType.warning
+        default:
+            return LoggerMessageType.info
+        }
+    }
+    
     /**
     * Handler for getting a text/plain response.
     */
