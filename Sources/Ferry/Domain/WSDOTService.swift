@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import KituraRequest
 
 public class WSDOTService {
     var key: String
@@ -24,19 +25,16 @@ public class WSDOTService {
                     method: String,
                     completionHandler: @escaping (JSON) -> Void)
     {
-        var request = URLRequest(url: URL(string: "http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)?apiaccesscode=\(self.key)")!)
-        request.httpMethod = "GET"
-        let session = URLSession.shared
+        let url = "http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)?apiaccesscode=\(self.key)"
         
-        session.dataTask(with: request) {data, response, err in
-            print("Entered the completionHandler")
+        KituraRequest.request(.get, url).response {
+            request, response, data, error in
             
             // Parse data into JSON
             let json = JSON(data: data!)
             
             // Callback
             completionHandler(json)
-            
-            }.resume()
+        }
     }
 }
