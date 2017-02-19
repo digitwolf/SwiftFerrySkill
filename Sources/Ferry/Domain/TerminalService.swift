@@ -8,51 +8,38 @@
 
 import Foundation
 import SwiftyJSON
-import Alamofire
 
 public class TerminalService : WSDOTService {
-    public init() {
+    public override init() {
         super.init(key: "2d1dbff1-4218-4e8b-b832-e6599db7919b")
     }
-}
-
-public class WSDOTService {
-    var key: String = "2d1dbff1-4218-4e8b-b832-e6599db7919b"
     
-    init(key: String) {
-        self.key = key
+    func terminalbasics(completionHandler: @escaping (JSON) -> Void) {
+        self.get(path: "terminals",
+                 method: "terminalbasics",
+                 completionHandler: completionHandler)
     }
     
-    public func get(path: String,
-                    method: String,
-                    completionHandler: @escaping (JSON) -> Void)
-    {
-        print("http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)")
-        
-        let parameters: Parameters = ["apiaccesscode": key]
-        Alamofire
-            .request("http://www.wsdot.wa.gov/ferries/api/\(path)/rest/\(method)", parameters: parameters)
-            .validate(statusCode: 200..<300)
-            .validate(contentType: ["application/json"])
-            .downloadProgress(closure: { (Progress) in
-                print(Progress.fractionCompleted)
-            })
-            .responseJSON { response in
-                switch response.result {
-                case .success:
-                    print("Validation Successful")
-                case .failure(let error):
-                    print(error)
-                }
-                
-                
-                print(response.request!)  // original URL request
-                print(response.response!) // HTTP URL response
-                print(response.data!)     // server data
-                print(response.result)   // result of response serialization
-                    
-                let json = JSON(response.result.value!)
-                completionHandler(json);
-        }
+    func terminallocations(completionHandler: @escaping (JSON) -> Void) {
+        self.get(path: "terminals",
+                 method: "terminallocations",
+                 completionHandler: completionHandler)
+    }
+    
+    func terminallocations(terminalID: String, completionHandler: @escaping (JSON) -> Void) {
+        self.get(path: "terminals",
+                 method: "terminallocations/\(terminalID)",
+            completionHandler: completionHandler)
+    }
+    
+    func terminalwaittimes(completionHandler: @escaping (JSON) -> Void) {
+        self.get(path: "terminals",
+                 method: "terminalwaittimes",
+                 completionHandler: completionHandler)
+    }
+    func terminalwaittimes(terminalID: String, completionHandler: @escaping (JSON) -> Void) {
+        self.get(path: "terminals",
+                 method: "terminalwaittimes/\(terminalID)",
+            completionHandler: completionHandler)
     }
 }

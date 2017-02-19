@@ -26,5 +26,11 @@ public class FerryController {
                             completionHandler: { result in
                                     try! response.status(.OK).send(json: result).end()
         })
+        let terminalServiceLocation = TerminalService()
+        terminalServiceLocation.get(path: "terminals",
+                            method: "terminallocations",
+                            completionHandler: { result in
+                                try! response.status(.OK).send(json: result).end()
+        })
     }
 }
