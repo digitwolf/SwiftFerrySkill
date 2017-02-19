@@ -10,6 +10,8 @@ import Foundation
 import AlexaSkillsKit
 
 public class AlexaSkillHandler : RequestHandler {
+    let ferryService = FerryService()
+    
     public init() {}
     
     public func handleLaunch(request: LaunchRequest, session: Session, next: @escaping (StandardResult) -> ()) {
@@ -23,7 +25,22 @@ public class AlexaSkillHandler : RequestHandler {
             return
         }
         
-        let standardResponse = generateResponse(message: "Alexa Skill received intent \(request.intent.name)")
+        guard let from = request.intent.slots["From"]?.value
+            else {
+                next(.failure(MessageError(message: "Please specify departure city")))
+                return
+        }
+        
+        guard let to = request.intent.slots["To"]?.value
+            else {
+                next(.failure(MessageError(message: "Please specify arrival city")))
+                return
+        }
+        
+        let msg = ferryService.getFerry(from: from, to: to) ?? "Sorry, there is no into about this"
+        
+        
+        let standardResponse = generateResponse(message: msg)
         next(.success(standardResponse: standardResponse, sessionAttributes: session.attributes))
     }
     
