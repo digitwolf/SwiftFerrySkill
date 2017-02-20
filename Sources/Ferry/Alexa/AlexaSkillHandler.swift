@@ -37,7 +37,9 @@ public class AlexaSkillHandler : RequestHandler {
                 return
         }
         
-        let msg = ferryService.getFerry(from: from, to: to) ?? "Sorry, there is no into about this"
+        let fromID = ferryService.getFerry(ferry: from)
+        let toID = ferryService.getFerry(ferry: to)
+        let msg = ferryService.getWaitingTime(from: fromID!, to: toID!) ?? "Sorry, there is no into about this"
         
         
         let standardResponse = generateResponse(message: msg)

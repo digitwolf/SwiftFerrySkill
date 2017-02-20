@@ -8,15 +8,22 @@
 
 import Foundation
 import XCTest
+import LoggerAPI
+import HeliumLogger
 
 @testable import Ferry
 
 class TerminalServiceTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        HeliumLogger.use(LoggerMessageType.debug)
+    }
+    
     func testGet() {
         let semaphore = DispatchSemaphore(value: 0)
         TerminalService().terminalbasics(completionHandler: { result in
             XCTAssertNotNil(result)
-            print(result[0].string)
+        
         
             semaphore.signal()
         })
@@ -32,4 +39,5 @@ class TerminalServiceTests: XCTestCase {
         })
         semaphore.wait()
     }
+    
 }
