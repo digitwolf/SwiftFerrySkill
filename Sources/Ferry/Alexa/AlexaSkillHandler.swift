@@ -39,8 +39,12 @@ public class AlexaSkillHandler : RequestHandler {
         
         let fromID = ferryService.getFerry(ferry: from)
         let toID = ferryService.getFerry(ferry: to)
-        let msg = ferryService.getWaitingTime(from: fromID!, to: toID!) ?? "Sorry, there is no into about this"
-        
+        var msg = ""
+        if fromID! == nil && toID! == nil {
+            msg = "The provided arrival or departure city is not valid and cannot be used to identify a specific terminal."
+        } else {
+            msg = ferryService.getWaitingTime(from: fromID!, to: toID!) ?? "Sorry, there is no into about this"
+        }
         
         let standardResponse = generateResponse(message: msg)
         next(.success(standardResponse: standardResponse, sessionAttributes: session.attributes))

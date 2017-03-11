@@ -14,10 +14,18 @@ public class TerminalService : WSDOTService {
         super.init(key: "2d1dbff1-4218-4e8b-b832-e6599db7919b")
     }
     
-    func terminalbasics(completionHandler: @escaping (JSON) -> Void) {
+    func terminalbasics(completionHandler: @escaping ([TerminalBasics]) -> Void) {
         self.get(path: "terminals",
                  method: "terminalbasics",
-                 completionHandler: completionHandler)
+                 completionHandler: { json in
+                    var result: [TerminalBasics] = []
+                    
+                    for obj in json.arrayValue {
+                        result.append(TerminalBasics(obj))
+                    }
+                    
+                    completionHandler(result)
+        })
     }
     
     func terminallocations(completionHandler: @escaping (JSON) -> Void) {
@@ -32,22 +40,45 @@ public class TerminalService : WSDOTService {
             completionHandler: completionHandler)
     }
     
-    func terminalwaittimes(completionHandler: @escaping (JSON) -> Void) {
+    func terminalwaittimes(completionHandler: @escaping (TerminalWaitTimes) -> Void) {
         self.get(path: "terminals",
                  method: "terminalwaittimes",
-                 completionHandler: completionHandler)
+            completionHandler: { json in
+                var result: TerminalWaitTimes = TerminalWaitTimes()
+                result = TerminalWaitTimes.init(json)
+                completionHandler(result)
+        })
+        
     }
     
-    func terminalwaittimes(terminalID: String, completionHandler: @escaping (JSON) -> Void) {
+    func terminalwaittimes(terminalID: String, completionHandler: @escaping (TerminalWaitTimes) -> Void) {
         self.get(path: "terminals",
-                 method: "terminalwaittimes/\(terminalID)",
-            completionHandler: completionHandler)
+                method: "terminalwaittimes/\(terminalID)",
+                completionHandler: { json in
+                var result: TerminalWaitTimes = TerminalWaitTimes()
+                result = TerminalWaitTimes.init(json)
+                completionHandler(result)
+        })
+
     }
     
     func terminalsailingspace
+        (terminalID: String, completionHandler: @escaping (TerminalSailingSpace) -> Void) {
+        self.get(path: "terminals",
+                method: "terminalsailingspace/\(terminalID)",
+                completionHandler: { json in
+                var result: TerminalSailingSpace = TerminalSailingSpace()
+                result = TerminalSailingSpace.init(json)
+                completionHandler(result)
+                
+            })
+    }
+    
+    // provides helpful information for terminal commuters (including parking notes, vehicle-specific tips, etc). A TerminalID, or unique terminal identifier, may be optionally passed to retrieve a specific terminal.
+    func terminaltransports
         (terminalID: String, completionHandler: @escaping (JSON) -> Void) {
         self.get(path: "terminals",
-                 method: "terminalsailingspace/\(terminalID)",
+                 method: "terminaltransports/\(terminalID)",
             completionHandler: completionHandler)
     }
 }

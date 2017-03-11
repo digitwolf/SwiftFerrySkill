@@ -30,7 +30,7 @@ class TerminalServiceTests: XCTestCase {
         semaphore.wait()
     }
     
-    func locationGet() {
+    func testlocationGet() {
         let semaphore = DispatchSemaphore(value: 0)
         TerminalService().terminallocations(completionHandler: { result in
             XCTAssertNotNil(result)
@@ -40,4 +40,24 @@ class TerminalServiceTests: XCTestCase {
         semaphore.wait()
     }
     
+    func testWaitingTimeGet() {
+        let semaphore = DispatchSemaphore(value: 0)
+        TerminalService().terminalwaittimes(terminalID: "7", completionHandler: { result in
+            XCTAssertNotNil(result)
+            print(result)
+            semaphore.signal()
+        })
+        semaphore.wait()
+    }
+    
+    func testSpaceAvailable() {
+        let semaphore = DispatchSemaphore(value: 0)
+        TerminalService().terminalsailingspace(terminalID: "3", completionHandler: { result in
+            XCTAssertNotNil(result)
+            print(result)
+            semaphore.signal()
+        })
+        semaphore.wait()
+    }
+
 }
