@@ -73,11 +73,17 @@ class FerryServiceTests: XCTestCase {
         print("Waiting time at Bainbridge Island terminal is " + message!)
     }
     
-//    func testgetAvailableSpace() {
-//        let ferry = FerryService()
-//        let space = ferry.getAvailableSpace(terminalId: 3, terminalTo: 7)
-//        XCTAssertNotNil(space)
-//        print("Available space " + String(describing: space))
-//    }
+    func testgetAvailableSpace() {
+        let ferry = FerryService()
+        let space = ferry.getAvailableSpace(terminalId: 3, terminalTo: 7)
+        XCTAssertNotNil(space)
+        print("Available space " + String(describing: space))
+    }
+    
+    func testgetAvailableSpaceNoRoute() {
+        let ferry = FerryService()
+        let space = ferry.getAvailableSpace(terminalId: 20, terminalTo: 7)
+        XCTAssertEqual("There is no information about this route\'s available space", space)
+    }
 
 }

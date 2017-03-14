@@ -95,9 +95,34 @@ class FerryService {
         
     }
     
-//    func getAvailableSpace(terminalId: Int, terminalTo: Int) -> Int? {
-//        var availableSpace : Dictionary<String, [DepartingSpaces]> = [:]
-//        
-//        return available[0].spaceForArrivalTerminals[0].driveUpSpaceCount!
-//    }
+    func getAvailableSpace(terminalId: Int, terminalTo: Int) -> String? {
+        var availableSpace : Dictionary<String, [AvailableSpace]?> = [:]
+        terminalService.terminalsailingspace(terminalID: String(terminalId)) { res in
+            for terminal in res.departingSpaces {
+                for spaceArrival in terminal.spaceForArrivalTerminals {
+                   for i in 0 ..< spaceArrival.arrivalTerminalIDs.count {
+                    let key = String(spaceArrival.arrivalTerminalIDs[i])
+                    let space = AvailableSpace()
+                    space.departingId = terminalId
+                    space.departureDate = terminal.departure
+                    space.driveUpSpaceCount = spaceArrival.driveUpSpaceCount
+                    space.arrivalId = spaceArrival.arrivalTerminalIDs[i]
+                    var arr: [AvailableSpace] = []
+                    if (availableSpace[key] == nil) {
+                      availableSpace[key] = arr
+                    }
+                    arr = (availableSpace[key])!!
+                    arr.append(space)
+                    availableSpace[key] = arr
+                    }
+                }
+            }
+        }
+        let sp = availableSpace[String(terminalTo)]
+        let first = availableSpace[String(terminalTo)]??.first?.driveUpSpaceCount
+        guard sp != nil && first != nil else{
+                return "There is no information about this route's available space"
+        }
+        return "The remaining drive-up space available on the vessel is " + String(describing: first)
+    }
 }
