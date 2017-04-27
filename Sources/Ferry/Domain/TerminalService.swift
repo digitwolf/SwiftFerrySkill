@@ -28,16 +28,29 @@ public class TerminalService : WSDOTService {
         })
     }
     
-    func terminallocations(completionHandler: @escaping (JSON) -> Void) {
+    func terminallocations(completionHandler: @escaping ([TerminalLocations]) -> Void) {
         self.get(path: "terminals",
                  method: "terminallocations",
-                 completionHandler: completionHandler)
+                 completionHandler: { json in
+                    var result: [TerminalLocations] = []
+                    for obj in json.arrayValue {
+                        result.append(TerminalLocations(obj))
+                    }
+                    completionHandler(result)
+        })
     }
     
-    func terminallocations(terminalID: String, completionHandler: @escaping (JSON) -> Void) {
+    func terminallocations(terminalID: String, completionHandler: @escaping ([TerminalLocations]) -> Void) {
         self.get(path: "terminals",
                  method: "terminallocations/\(terminalID)",
-            completionHandler: completionHandler)
+            completionHandler: { json in
+                var result: [TerminalLocations] = []
+                for obj in json.arrayValue {
+                    result.append(TerminalLocations(obj))
+                }
+                completionHandler(result)
+        })
+
     }
     
     func terminalwaittimes(completionHandler: @escaping (TerminalWaitTimes) -> Void) {

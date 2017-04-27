@@ -76,25 +76,26 @@ class FerryService {
         }
         
         guard waitingTime[waitingKey] != nil else {
-            return "There is information about waiting time for this route"
+            return "There is no information about waiting time for this route"
         }
         let time = String(describing: waitingTime[waitingKey]?.waitTimeLastUpdated)
         return " on " + time + " " + String(describing: waitingTime[waitingKey]?.waitTimeIVRNotes)
     }
     
-    // return waiting time for a given terminal
+    // return waiting time for a given terminal id to destination terminal ID
     func getWaitingTime(from: Int) -> String? {
         var waitingTime = self.initWaitingTime(from: from)
         let fromCity = self.getTerminalName(terminalID: from)
         let waitingKey = fromCity!
         guard waitingTime[waitingKey] != nil else {
-            return "There is information about waiting time for this route"
+            return "There is no information about waiting time for this route"
         }
         let time = String(describing: waitingTime[waitingKey]?.waitTimeLastUpdated)
         return " on " + time + " " + String(describing: waitingTime[waitingKey]?.waitTimeIVRNotes)
         
     }
     
+    // return the available space for given
     func getAvailableSpace(terminalId: Int, terminalTo: Int) -> String? {
         var availableSpace : Dictionary<String, [AvailableSpace]?> = [:]
         terminalService.terminalsailingspace(terminalID: String(terminalId)) { res in
@@ -108,6 +109,7 @@ class FerryService {
                     space.driveUpSpaceCount = spaceArrival.driveUpSpaceCount
                     space.arrivalId = spaceArrival.arrivalTerminalIDs[i]
                     var arr: [AvailableSpace] = []
+                    
                     if (availableSpace[key] == nil) {
                       availableSpace[key] = arr
                     }
@@ -118,6 +120,7 @@ class FerryService {
                 }
             }
         }
+        
         let sp = availableSpace[String(terminalTo)]
         let first = availableSpace[String(terminalTo)]??.first?.driveUpSpaceCount
         guard sp != nil && first != nil else{
@@ -125,4 +128,5 @@ class FerryService {
         }
         return "The remaining drive-up space available on the vessel is " + String(describing: first)
     }
+
 }
